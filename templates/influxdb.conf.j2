@@ -22,8 +22,13 @@ bind-address = "{{ influxdb_bind_address }}"
 ###
 
 [meta]
+  # Where the metadata/raft database is stored
   dir = "{{ influxdb_meta_dir }}"
+
+  # Automatically create a default retention policy when creating a database.
   retention-autocreate = {{ influxdb_meta_retention_autocreate | lower }}
+
+  # If log messages are printed for the meta service
   logging-enabled = true
 
 ###
@@ -89,7 +94,7 @@ bind-address = "{{ influxdb_bind_address }}"
   # value of 0 results in 50% of runtime.GOMAXPROCS(0) used at runtime.  Any number greater
   # than 0 limits compactions to that value.  This setting does not apply
   # to cache snapshotting.
-  max-concurrent-compactions = "{{ influxdb_data_max_concurrent_compactions }}"
+  max-concurrent-compactions = {{ influxdb_data_max_concurrent_compactions }}
 
   # The threshold, in bytes, when an index write-ahead log file will compact
   # into an index file. Lower sizes will cause log files to be compacted more
@@ -98,22 +103,23 @@ bind-address = "{{ influxdb_bind_address }}"
   # and provide higher write throughput.
   # Valid size suffixes are k, m, or g (case insensitive, 1024 = 1k).
   # Values without a size suffix are in bytes.
-  # max-index-log-file-size = "{{ influxdb_data_max_index_log_file_size }}"
+  max-index-log-file-size = "{{ influxdb_data_max_index_log_file_size }}"
 
   # The maximum series allowed per database before writes are dropped.  This limit can prevent
   # high cardinality issues at the database level.  This limit can be disabled by setting it to
   # 0.
-  max-series-per-database = "{{ influxdb_data_max_series_per_database }}"
+  max-series-per-database = {{ influxdb_data_max_series_per_database }}
 
   # The maximum number of tag values per tag that are allowed before writes are dropped.  This limit
   # can prevent high cardinality tag values from being written to a measurement.  This limit can be
   # disabled by setting it to 0.
-  # max-values-per-tag = "{{ influxdb_data_max_values_per_tag }}"
+  # max-values-per-tag = {{ influxdb_data_max_values_per_tag }}
 
   # If true, then the mmap advise value MADV_WILLNEED will be provided to the kernel with respect to
   # TSM files. This setting has been found to be problematic on some kernels, and defaults to off.
   # It might help users who have slow disks in some cases.
-  tsm-use-madv-willneed = "{{ influxdb_data_tsm_use_madv_willneed }}"
+  tsm-use-madv-willneed = {{ influxdb_data_tsm_use_madv_willneed | lower }}
+
 ###
 ### [coordinator]
 ###
@@ -214,7 +220,7 @@ bind-address = "{{ influxdb_bind_address }}"
   enabled = {{ influxdb_http_enabled | lower }}
 
   # The bind address used by the HTTP service
-  bind-address = "{{ influxdb_bind_address }}"
+  bind-address = "{{ influxdb_http_bind_address }}"
 
   # Determines whether user authentication is enabled over HTTP/HTTPS.
   auth-enabled = {{ influxdb_http_auth_enabled | lower }}
@@ -260,32 +266,32 @@ bind-address = "{{ influxdb_bind_address }}"
   shared-secret = "{{ influxdb_http_shared_secret }}"
 
   # The default chunk size for result sets that should be chunked.
-  max-row-limit = "{{ influxdb_http_max_row_limit }}"
+  max-row-limit = {{ influxdb_http_max_row_limit }}
 
   # The maximum number of HTTP connections that may be open at once.  New connections that
   # would exceed this limit are dropped.  Setting this value to 0 disables the limit.
-  max-connection-limit = "{{ influxdb_http_max_connection_limit }}"
+  max-connection-limit = {{ influxdb_http_max_connection_limit }}
 
   # Enable http service over unix domain socket
-  unix-socket-enabled = "{{ influxdb_http_unix_socket_enabled | lower }}"
+  unix-socket-enabled = {{ influxdb_http_unix_socket_enabled | lower }}
 
   # The path of the unix domain socket.
   bind-socket = "{{ influxdb_http_bind_socket }}"
 
   # The maximum size of a client request body, in bytes. Setting this value to 0 disables the limit.
-  max-body-size = "{{ influxdb_http_max_body_size }}"
+  max-body-size = {{ influxdb_http_max_body_size }}
 
   # The maximum number of writes processed concurrently.
   # Setting this to 0 disables the limit.
-  max-concurrent-write-limit = "{{ influxdb_http_max_concurrent_write_limit }}"
+  max-concurrent-write-limit = {{ influxdb_http_max_concurrent_write_limit }}
 
   # The maximum number of writes queued for processing.
   # Setting this to 0 disables the limit.
-  max-enqueued-write-limit = "{{ influxdb_http_max_enqueued_write_limit }}"
+  max-enqueued-write-limit = {{ influxdb_http_max_enqueued_write_limit }}
 
   # The maximum duration for a write to wait in the queue to be processed.
   # Setting this to 0 or setting max-concurrent-write-limit to 0 disables the limit.
-  enqueued-write-timeout = "{{ influxdb_http_enqueued_write_timeout }}"
+  enqueued-write-timeout = {{ influxdb_http_enqueued_write_timeout }}
 
 ###
 ### [ifql]
@@ -295,13 +301,13 @@ bind-address = "{{ influxdb_bind_address }}"
 
 [ifql]
   # Determines whether the RPC service is enabled.
-  # enabled = true
+  enabled = {{ influxdb_ifql_enabled | lower }}
 
   # Determines whether additional logging is enabled.
-  # log-enabled = true
+  log-enabled = {{ influxdb_ifql_log_enabled | lower }}
 
   # The bind address used by the ifql RPC service.
-  # bind-address = ":8082"
+  bind-address = "{{ influxdb_ifql_bind_address }}"
 
 ###
 ### [logging]
@@ -324,7 +330,7 @@ bind-address = "{{ influxdb_bind_address }}"
 
   # Suppresses the logo output that is printed when the program is started.
   # The logo is always suppressed if STDOUT is not a TTY.
-  suppress-logo = "{{ influxdb_logging_suppress_logo | lower }}"
+  suppress-logo = {{ influxdb_logging_suppress_logo | lower }}
 
 ###
 ### [subscriber]
@@ -459,7 +465,7 @@ bind-address = "{{ influxdb_bind_address }}"
   certificate = "{{ influxdb_opentsdb_certificate }}"
 
   # Log an error for every malformed point.
-  # log-point-errors = {{ influxdb_opentsdb_log_point_errors | lower }}
+  log-point-errors = {{ influxdb_opentsdb_log_point_errors | lower }}
 
   # These next lines control how batching works. You should have this enabled
   # otherwise you could get dropped metrics or poor performance. Only points
