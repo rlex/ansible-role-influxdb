@@ -1,0 +1,37 @@
+---
+
+- name: Ensure the system can use the HTTPS transport for APT.
+  stat:
+    path: /usr/lib/apt/methods/https
+  register: apt_https_transport
+
+- name: Install APT HTTPS transport.
+  apt:
+    name: "apt-transport-https"
+    state: present
+  when: not apt_https_transport.stat.exists
+
+- name: Download InfluxData apt key.
+  apt_key:
+    url: "https://repos.influxdata.com/influxdb.key"
+    state: present
+
+- name: Add InfluxData repository with LSB
+  apt_repository:
+    repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_lsb.codename }} stable"
+    filename: "influxdata"
+    state: present
+  when: ansible_lsb is defined and ansible_lsb.codename is defined
+
+- name: Add InfluxData repository.
+  apt_repository:
+    repo: "deb https://repos.influxdata.com/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    filename: "influxdata"
+    state: present
+  when: ansible_lsb is not defined or ansible_lsb.codename is not defined
+
+- name: "Install influxdb package"
+  apt:
+    name: "influxdb"
+    state: present
+  notify: "restart influxdb"

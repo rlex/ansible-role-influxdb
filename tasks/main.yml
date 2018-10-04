@@ -1,0 +1,6 @@
+- name: "Install the correct repository"
+  include_tasks: "debian.yml"
+  when: ansible_os_family == "debian"
+
+- name: "configure influxdb"
+  include_tasks: "configure.yml"
