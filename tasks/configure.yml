@@ -6,3 +6,4 @@
     owner: influxdb
     group: influxdb
     mode: 0600
+  notify: restart influxdb
