@@ -26,6 +26,15 @@ influxdb_data_max_series_per_database: 1000000
 influxdb_data_max_values_per_tag: 100000
 influxdb_data_tsm_use_madv_willneed: false
 
+# Coordinator
+influxdb_coordinator_write_timeout: 10s
+influxdb_coordinator_max_concurrent_queries: 0
+influxdb_coordinator_query_timeout: 0s
+influxdb_coordinator_log_queries_after: 0s
+influxdb_coordinator_max_select_point: 0
+influxdb_coordinator_max_select_series: 0
+influxdb_coordinator_max_select_buckets: 0
+
 # Retention
 influxdb_retention_enabled: true
 influxdb_retention_check_interval: 30m

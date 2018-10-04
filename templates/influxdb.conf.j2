@@ -114,6 +114,41 @@ bind-address = "{{ influxdb_bind_address }}"
   # TSM files. This setting has been found to be problematic on some kernels, and defaults to off.
   # It might help users who have slow disks in some cases.
   tsm-use-madv-willneed = "{{ influxdb_data_tsm_use_madv_willneed }}"
+###
+### [coordinator]
+###
+### Controls the clustering service configuration.
+###
+
+[coordinator]
+  # The default time a write request will wait until a "timeout" error is returned to the caller.
+  write-timeout = "{{ influxdb_coordinator_write_timeout }}"
+
+  # The maximum number of concurrent queries allowed to be executing at one time.  If a query is
+  # executed and exceeds this limit, an error is returned to the caller.  This limit can be disabled
+  # by setting it to 0.
+  max-concurrent-queries = {{ influxdb_coordinator_max_concurrent_queries }}
+
+  # The maximum time a query will is allowed to execute before being killed by the system.  This limit
+  # can help prevent run away queries.  Setting the value to 0 disables the limit.
+  query-timeout = "{{ influxdb_coordinator_query_timeout }}"
+
+  # The time threshold when a query will be logged as a slow query.  This limit can be set to help
+  # discover slow or resource intensive queries.  Setting the value to 0 disables the slow query logging.
+  log-queries-after = "{{ influxdb_coordinator_log_queries_after }}"
+
+  # The maximum number of points a SELECT can process.  A value of 0 will make
+  # the maximum point count unlimited.  This will only be checked every second so queries will not
+  # be aborted immediately when hitting the limit.
+  max-select-point = {{ influxdb_coordinator_max_select_point }}
+
+  # The maximum number of series a SELECT can run.  A value of 0 will make the maximum series
+  # count unlimited.
+  max-select-series = {{ influxdb_coordinator_max_select_series }}
+
+  # The maxium number of group by time bucket a SELECT can create.  A value of zero will max the maximum
+  # number of buckets unlimited.
+  max-select-buckets = {{ influxdb_coordinator_max_select_buckets }}
 
 ###
 ### [retention]
