@@ -35,3 +35,8 @@
     name: "influxdb"
     state: present
   notify: "restart influxdb"
+
+- name: "Install influxdb python package"
+  apt:
+    name: "python-influxdb"
+    state: present

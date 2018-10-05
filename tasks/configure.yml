@@ -7,3 +7,38 @@
     group: influxdb
     mode: 0600
   notify: restart influxdb
+
+- name: Create InfluxDB users
+  influxdb_user:
+    hostname: "{{ item.state | default('localhost') }}"
+    user_name: "{{ item.user_name }}"
+    user_password: "{{ item.user_password }}"
+    state: "{{ item.state | default('present') }}"
+    admin: "{{ item.admin | default('no') }}"
+    login_username: "{{ influxdb_login_username }}"
+    login_password: "{{ influxdb_login_password }}"
+  with_items: "{{ influxdb_users }}"
+  when: influxdb_users|length > 0
+
+- name: Create InfluxDB databases
+  influxdb_database:
+    hostname: "{{ item.state | default('localhost') }}"
+    database_name: "{{ item.database_name }}"
+    state: "{{ item.state | default('present') }}"
+    login_username: "{{ influxdb_login_username }}"
+    login_password: "{{ influxdb_login_password }}"
+  with_items: "{{ influxdb_databases }}"
+  when: influxdb_databases|length > 0
+
+- name: Create InfluxDB retention policies
+  influxdb_retention_policy:
+    hostname: "{{ item.state | default('localhost') }}"
+    policy_name: "{{ item.policy_name }}"
+    database_name: "{{ item.database_name }}"
+    default: "{{ item.default | default('false') }}"
+    duration: "{{ item.duration }}"
+    replication: "{{ item.replication | default('1') }}"
+    login_username: "{{ influxdb_login_username }}"
+    login_password: "{{ influxdb_login_password }}"
+  with_items: "{{ influxdb_retention_policies }}"
+  when: influxdb_retention_policies|length > 0
