@@ -17,7 +17,7 @@
     admin: "{{ item.admin | default('no') }}"
     login_username: "{{ influxdb_login_username }}"
     login_password: "{{ influxdb_login_password }}"
-  with_items: "{{ influxdb_users }}"
+  loop: "{{ influxdb_users }}"
   when: influxdb_users|length > 0
 
 - name: Create InfluxDB databases
@@ -27,7 +27,7 @@
     state: "{{ item.state | default('present') }}"
     login_username: "{{ influxdb_login_username }}"
     login_password: "{{ influxdb_login_password }}"
-  with_items: "{{ influxdb_databases }}"
+  loop: "{{ influxdb_databases }}"
   when: influxdb_databases|length > 0
 
 - name: Create InfluxDB retention policies
@@ -40,5 +40,5 @@
     replication: "{{ item.replication | default('1') }}"
     login_username: "{{ influxdb_login_username }}"
     login_password: "{{ influxdb_login_password }}"
-  with_items: "{{ influxdb_retention_policies }}"
+  loop: "{{ influxdb_retention_policies }}"
   when: influxdb_retention_policies|length > 0
