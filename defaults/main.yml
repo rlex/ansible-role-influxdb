@@ -16,11 +16,14 @@ influxdb_data_wal_fsync_delay: 0s
 influxdb_data_index_version: inmem
 influxdb_data_trace_logging_enabled: false
 influxdb_data_query_log_enabled: true
+influxdb_data_validate_keys: false
 influxdb_data_cache_max_memory_size: 1g
 influxdb_data_cache_snapshot_memory_size: 25m
 influxdb_data_cache_snapshot_write_cold_duration: 10m
 influxdb_data_compact_full_write_cold_duration: 4h
 influxdb_data_max_concurrent_compactions: 0
+influxdb_data_compact_throughput: 48m
+influxdb_data_compact_throughput_burst: 48m
 influxdb_data_max_index_log_file_size: 1m
 influxdb_data_max_series_per_database: 1000000
 influxdb_data_max_values_per_tag: 100000
@@ -72,6 +75,7 @@ influxdb_http_max_body_size: 25000000
 influxdb_http_max_concurrent_write_limit: 0
 influxdb_http_max_enqueued_write_limit: 0
 influxdb_http_enqueued_write_timeout: 0
+influxdb_http_flux_enabled: false
 
 # ifQL
 influxdb_ifql_enabled: true

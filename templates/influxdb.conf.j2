@@ -66,6 +66,10 @@ bind-address = "{{ influxdb_bind_address }}"
   # log any sensitive data contained within a query.
   query-log-enabled = {{ influxdb_data_query_log_enabled | lower }}
 
+  # Validates incoming writes to ensure keys only have valid unicode characters.
+  # This setting will incur a small overhead because every key must be checked.
+  validate-keys = {{ influxdb_data_validate_keys | lower }}
+
   # Settings for the TSM engine
 
   # CacheMaxMemorySize is the maximum size a shard's cache can
@@ -95,6 +99,15 @@ bind-address = "{{ influxdb_bind_address }}"
   # than 0 limits compactions to that value.  This setting does not apply
   # to cache snapshotting.
   max-concurrent-compactions = {{ influxdb_data_max_concurrent_compactions }}
+
+  # CompactThroughput is the rate limit in bytes per second that we
+  # will allow TSM compactions to write to disk. Note that short bursts are allowed
+  # to happen at a possibly larger value, set by CompactThroughputBurst
+  compact-throughput = "{{ influxdb_data_compact_throughput }}"
+
+  # CompactThroughputBurst is the rate limit in bytes per second that we
+  # will allow TSM compactions to write to disk.
+  compact-throughput-burst = "{{ influxdb_data_compact_throughput_burst }}"
 
   # The threshold, in bytes, when an index write-ahead log file will compact
   # into an index file. Lower sizes will cause log files to be compacted more
@@ -218,6 +231,9 @@ bind-address = "{{ influxdb_bind_address }}"
 [http]
   # Determines whether HTTP endpoint is enabled.
   enabled = {{ influxdb_http_enabled | lower }}
+
+  # Determines whether the Flux query endpoint is enabled.
+  flux-enabled = {{ influxdb_http_flux_enabled | lower }}
 
   # The bind address used by the HTTP service
   bind-address = "{{ influxdb_http_bind_address }}"

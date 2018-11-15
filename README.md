@@ -4,8 +4,8 @@
 Installs influxdb from packages (from InfluxData repository), configures and starts it.  
 Also can manage supported resources (users, databases, retention policies)  
 This role is rather big and supports most of parameters in InfluxDB config.  
-At the moment of writing, this ansible role has been synced with [influxdb 1.6.3 config](https://github.com/influxdata/influxdb/blob/389de31c961831de0a9f4172173337d4a6193909/etc/config.sample.toml)  
-All settings have their default values where possible
+At the moment of writing, this ansible role has been synced with [influxdb 1.7.1 config](https://github.com/influxdata/influxdb/blob/6affa7c7f59409b37b010bb8859f5675804b6258/etc/config.sample.toml)  
+All settings have their default values where possible.
 
 ##### Configuration
 For a list of available variables, you need to take a look at [default vars file](https://github.com/rlex/ansible-role-influxdb/blob/master/defaults/main.yml)
