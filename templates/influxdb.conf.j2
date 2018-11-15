@@ -310,22 +310,6 @@ bind-address = "{{ influxdb_bind_address }}"
   enqueued-write-timeout = {{ influxdb_http_enqueued_write_timeout }}
 
 ###
-### [ifql]
-###
-### Configures the ifql RPC API.
-###
-
-[ifql]
-  # Determines whether the RPC service is enabled.
-  enabled = {{ influxdb_ifql_enabled | lower }}
-
-  # Determines whether additional logging is enabled.
-  log-enabled = {{ influxdb_ifql_log_enabled | lower }}
-
-  # The bind address used by the ifql RPC service.
-  bind-address = "{{ influxdb_ifql_bind_address }}"
-
-###
 ### [logging]
 ###
 ### Controls how the logger emits logs to the output.
